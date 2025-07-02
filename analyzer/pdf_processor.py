@@ -220,9 +220,14 @@ def analyze_pdf(pdf_path, progress_callback=None, max_workers=8):
     output_folder = "drive_outputs"
     os.makedirs(output_folder, exist_ok=True)
 
-    # Clear prompts_suggestions and pdf_summary from all but the first row
-    df.loc[1:, 'prompts_suggestions'] = ""
-    df.loc[1:, 'pdf_summary'] = ""
+    # Clear and assign only to the first valid row
+    df["prompts_suggestions"] = ""
+    df["pdf_summary"] = ""
+
+    if not df.empty:
+        df.iloc[0, df.columns.get_loc("prompts_suggestions")] = prompt_response
+        df.iloc[0, df.columns.get_loc("pdf_summary")] = pdf_summary
+
 
 
     output_csv = os.path.join(output_folder, os.path.basename(pdf_path).replace(".pdf", "_gpt4o_summary.csv"))
