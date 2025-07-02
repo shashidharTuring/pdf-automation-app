@@ -145,6 +145,63 @@ def analyze_pdf(pdf_path, progress_callback=None, max_workers=8):
         ) else "no", axis=1
     )
 
+    # === Generate model-breaking prompts from flagged pages ===
+    print("🧠 Generating model-breaking prompts from flagged pages...")
+    try:
+        # Load model-breaking prompt
+        model_breaking_prompt = load_prompt("prompts/model_breaking_prompt.txt")
+
+        # Get flagged pages
+        flagged_pages = df[df["flagged_imp"] == "yes"]["page_no"].tolist()
+        print(f"✅ Found {len(flagged_pages)} flagged pages")
+
+        doc = fitz.open(pdf_path)
+        base64_images = []
+        added_pages = set()
+        total_pages = len(doc)
+
+        # Prioritize flagged pages
+        for page_no in flagged_pages:
+            page_index = int(page_no) - 1
+            page = doc.load_page(page_index)
+            pix = page.get_pixmap(matrix=fitz.Matrix(2, 2))
+            img_bytes = pix.tobytes("png")
+            base64_str = base64.b64encode(img_bytes).decode("utf-8")
+            base64_images.append((page_no, base64_str))
+            added_pages.add(page_no)
+
+        # Add context pages (up to 15 images total)
+        for i in range(total_pages):
+            if len(base64_images) >= 15:
+                break
+            page_no = i + 1
+            if page_no in added_pages:
+                continue
+            page = doc.load_page(i)
+            pix = page.get_pixmap(matrix=fitz.Matrix(2, 2))
+            img_bytes = pix.tobytes("png")
+            base64_str = base64.b64encode(img_bytes).decode("utf-8")
+            base64_images.append((page_no, base64_str))
+            added_pages.add(page_no)
+
+        # Send prompt to GPT-4o
+        print("🤖 Sending prompt to GPT-4o...")
+        prompt_response = call_gpt4o(model_breaking_prompt, [img for _, img in base64_images])
+
+        # Save in dataframe — same response for all rows (or just first)
+        # df["prompts_suggestions"] = ""
+        # df.loc[0, "prompts_suggestions"] = prompt_response
+        df["prompts_suggestions"] = prompt_response
+
+
+        print("✅ Model-breaking prompt response added to dataframe.")
+
+    except Exception as e:
+        print(f"❌ Failed to generate model-breaking prompts: {e}")
+        df["prompts_suggestions"] = ""
+
+
+
 
     # Drop raw detection columns
     df.drop(columns=["infographics", "charts", "financial_tables"], inplace=True)
@@ -162,6 +219,12 @@ def analyze_pdf(pdf_path, progress_callback=None, max_workers=8):
     # Save locally to drive_outputs/
     output_folder = "drive_outputs"
     os.makedirs(output_folder, exist_ok=True)
+
+    # Clear prompts_suggestions and pdf_summary from all but the first row
+    df.loc[1:, 'prompts_suggestions'] = ""
+    df.loc[1:, 'pdf_summary'] = ""
+
+
     output_csv = os.path.join(output_folder, os.path.basename(pdf_path).replace(".pdf", "_gpt4o_summary.csv"))
     df.to_csv(output_csv, index=False)
     print(f"\n✅ Results saved to CSV: {output_csv}")
@@ -176,11 +239,11 @@ def analyze_pdf(pdf_path, progress_callback=None, max_workers=8):
         # Load from Streamlit Cloud secrets
         creds_dict = json.loads(st.secrets["GOOGLE_APPLICATION_CREDENTIALS_JSON"])
         credentials = service_account.Credentials.from_service_account_info(creds_dict)
-
+        folder_id = "1zRSbrOpugIJBPpw2aTsjYGRJcPIEZMJh" 
         file_id = upload_file_to_drive(credentials, output_csv, folder_id)
 
         
-        folder_id = "1zRSbrOpugIJBPpw2aTsjYGRJcPIEZMJh"  # replace with your real folder ID
+         # replace with your real folder ID
         # file_id = upload_file_to_drive(service_account_file, output_csv, folder_id)
         print(f"✅ Uploaded to Google Drive: file ID = {file_id}")
     except Exception as e:
