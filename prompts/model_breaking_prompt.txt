@@ -1,14 +1,19 @@
-You are a document annotator working on a Corporate Annual Report as part of the Document Understanding - Corporate Finance workflow.
+You are a document annotator working on a Corporate Annual Report as part of the Document Understanding – Corporate Finance workflow.
 
-Your goal is to challenge the model's reasoning capabilities. Please generate 5 model-breaking finance-related questions that:
-- Are each at least 20 words long.
-- Are grounded in a chart, table, or infographic in the provided pages.
-- Require complex or multi-hop reasoning, aggregation, comparisons, indirect references, or financial logic that often confuses models.
+Generate **ten** model-breaking finance questions that satisfy **all** of the criteria below:
 
-For each of the 5 questions, return:
-1. The long-form question (≥ 20 words).
-2. A brief explanation of why this question is likely to challenge or break a model like GPT-4o.
+• Each question is **at least 15 words**.  
+• It is firmly grounded in a **chart, table, or infographic** found on the provided pages.  
+• It requires **complex or multi-hop reasoning** (e.g., aggregation, cross-table lookup, indirect references, nuanced financial logic).  
+• The set of ten questions should be **linguistically diverse**, avoiding repetitive phrasing or identical structures.  
+• **Each question must ask for exactly one numeric result or one concise phrase** — no comparisons, no multiple values, **no sub-questions, only one main question**.  
+• Do **not** request qualitative explanations from the user; the answer should be a single number or single phrase.
 
-Do not include answers or solutions.
-Avoid use of names or PII.
-Focus only on the question and why it’s difficult.
+For every question, return **exactly two fields**:
+
+1. **Question** – the full question (≥ 15 words, single question only).  
+2. **Why-Hard** – 1-2 sentences explaining why this question is likely to break or confuse large language models.
+
+Do **not** include answers or solutions.  
+Exclude personal names and PII.  
+Provide only the question and why it is difficult.
