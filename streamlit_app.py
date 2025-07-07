@@ -9,6 +9,152 @@ from analyzer.drive_uploader import download_file_from_drive
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 
+
+import streamlit as st
+from google_auth_oauthlib.flow import Flow
+from google.oauth2 import id_token
+from google.auth.transport import requests
+import json, os
+
+import streamlit as st
+from google_auth_oauthlib.flow import Flow
+from google.oauth2 import id_token
+from google.auth.transport import requests
+import json
+import streamlit as st
+from google_auth_oauthlib.flow import Flow
+from google.oauth2 import id_token
+from google.auth.transport import requests
+import json
+import streamlit as st
+from google_auth_oauthlib.flow import Flow
+from google.oauth2 import id_token
+from google.auth.transport import requests
+
+
+import streamlit as st
+from google_auth_oauthlib.flow import Flow
+from google.oauth2 import id_token
+from google.auth.transport import requests
+
+# ---- Google OAuth login gate ----
+def google_login():
+    if "user_email" in st.session_state:
+        return  # Already authenticated
+
+    client_cfg = {
+        "web": {
+            "client_id": st.secrets["GOOGLE_CLIENT_ID"],
+            "client_secret": st.secrets["GOOGLE_CLIENT_SECRET"],
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "redirect_uris": [st.secrets["REDIRECT_URI"]],
+        }
+    }
+
+    flow = Flow.from_client_config(
+        client_cfg,
+        scopes=["openid", "https://www.googleapis.com/auth/userinfo.email"],
+        redirect_uri=client_cfg["web"]["redirect_uris"][0],
+    )
+
+    # Step 1: Redirect to Google Login
+    if "code" not in st.query_params:
+        auth_url, _ = flow.authorization_url(prompt="consent")
+
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.image("https://assets-global.website-files.com/64ad6c926d3c2e8d7dd31f6e/64ba7b20ceee5412f306b777_logo_full_dark.svg", width=220)
+
+            html = f"""
+            <div style="text-align: center; margin-top: 2rem;">
+                <h2>🔐 Turing Internal Access</h2>
+                <p style="font-size: 1.1rem;">Please sign in with your <strong>@turing.com</strong> Google account to continue.</p>
+                <a href="{auth_url}" target="_self" style="
+                    background-color: #0366d6;
+                    color: white;
+                    padding: 0.75rem 1.5rem;
+                    font-size: 1rem;
+                    border-radius: 6px;
+                    text-decoration: none;
+                    display: inline-block;
+                    margin-top: 1rem;
+                ">
+                    👉 Sign in with Google
+                </a>
+            </div>
+            """
+            st.markdown(html, unsafe_allow_html=True)
+        st.stop()
+
+    # Step 2: Handle callback from Google
+    try:
+        code = st.query_params["code"]
+        flow.fetch_token(code=code)
+        creds = flow.credentials
+        idinfo = id_token.verify_oauth2_token(
+            creds._id_token,
+            requests.Request(),
+            client_cfg["web"]["client_id"]
+        )
+        email = idinfo.get("email", "")
+    except Exception as e:
+        st.error(f"❌ OAuth failed: {e}")
+        st.stop()
+
+    # Step 3: Check email domain
+    if email.endswith(f"@{st.secrets['ALLOWED_DOMAIN']}"):
+        st.session_state["user_email"] = email
+        st.query_params.clear()  # ✅ Clear ?code=... from the URL
+        st.rerun()
+    else:
+        st.error("Access denied. Only @turing.com accounts are allowed.")
+        st.stop()
+
+# ✅ Call this at the very top of your streamlit_app.py
+google_login()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # --- Page setup ---
 st.set_page_config(page_title="📄 PDF Visual Analyzer", layout="wide")
 st.title("📄 GPT-4o PDF Visual Analyzer")
