@@ -1,19 +1,41 @@
-You are a document annotator working on a Corporate Annual Report as part of the Document Understanding – Corporate Finance workflow.
+# Prompt: Craft 10 Quantitative, Model-Breaking Finance Questions
 
-Generate **ten** model-breaking finance questions that satisfy **all** of the criteria below:
+You are an **annotator** reviewing a **Corporate Annual Report** (PDF).
+Generate **ten** questions that will thoroughly test a large‑language model’s finance and numerical‑reasoning skills.
 
-• Each question is **at least 15 words**.  
-• It is firmly grounded in a **chart, table, or infographic** found on the provided pages.  
-• It requires **complex or multi-hop reasoning** (e.g., aggregation, cross-table lookup, indirect references, nuanced financial logic).  
-• The set of ten questions should be **linguistically diverse**, avoiding repetitive phrasing or identical structures.  
-• **Each question must ask for exactly one numeric result or one concise phrase** — no comparisons, no multiple values, **no sub-questions, only one main question**.  
-• Do **not** request qualitative explanations from the user; the answer should be a single number or single phrase.
+---
 
-For every question, return **exactly two fields**:
+## What to return (exactly)
 
-1. **Question** – the full question (≥ 15 words, single question only).  
-2. **Why-Hard** – 1-2 sentences explaining why this question is likely to break or confuse large language models.
+For **each** of the ten questions output **two bullets**:
 
-Do **not** include answers or solutions.  
-Exclude personal names and PII.  
-Provide only the question and why it is difficult.
+1. **Question** – *one sentence, at least 20 words, whose answer is a single number (currency, ratio, percentage, count) or one short finance phrase*.
+2. **Why it’s challenging** – *one or two short sentences* describing the multi‑step reasoning or finance nuance that makes the question hard.
+
+No answers, hints, or extra commentary—just those two bullets per question.
+
+---
+
+## Hard rules you **must** follow
+
+| Theme                       | Requirements                                                                                                                                                                                                                                                                                                 |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Visual grounding**        | • Each question must be answerable **only by examining at least one chart, table, diagram, or infographic** in the report.<br>• Refer to visuals **indirectly** (e.g., “the tallest blue bar in the operating‑profit waterfall”)—never by page number, chart title, or file name.                            |
+| **Single objective answer** | • The correct response must be **one number** (currency, ratio, percentage, count) **or one short phrase** (e.g., “free‑cash‑flow margin”).<br>• The question **must require at least one arithmetic or logical operation** (sum, difference, ratio, YoY delta, weighted average, what‑if adjustment, etc.). |
+| **Finance SME scope**       | • Use authentic corporate‑finance concepts: EBITDA margin, ROIC, working‑capital days, debt‑to‑equity, CapEx, segment profitability, stress‑test coverage, etc.<br>• Across the set, cover **at least three distinct finance topics**.                                                                       |
+| **Reasoning complexity**    | • Demand **multi‑step reasoning**—cross‑visual look‑ups, aggregation across rows, trend comparison, scenario math, indirect deduction.<br>• Vary reasoning styles (percentage‑point change, CAGR, composite metric derivation, multi‑segment consolidation).                                                 |
+| **Difficulty mix**          | • Provide **4 easy**, **4 medium**, **2 hard** questions:<br> – *Easy* ≈ 5‑10 reasoning steps.<br> – *Medium* ≈ 10‑15 steps.<br> – *Hard* ≈ 15‑25 steps or multi‑visual, multi‑year synthesis.                                                                                                               |
+| **Language quality**        | • Grammatically correct, precise, and realistic—something an equity analyst might genuinely ask.<br>• Avoid subjective asks (“Why did…”, “How effective…”) and all names/PII.                                                                                                                                |
+
+---
+
+## Skeleton (do **not** reuse wording verbatim)
+
+**Q1.** *Twenty‑five‑word question asking for the percentage‑point improvement in adjusted EBITDA margin between the smallest green bar and the final bar of the margin bridge chart.*
+**Why it’s challenging:** *Model must locate two margin values, subtract, and express the change in points.*
+
+*(Repeat Q2–Q10 with the required easy/medium/hard distribution.)*
+
+---
+
+⚠️ *Return exactly ten question/why‑challenging pairs—nothing more, nothing less.*
