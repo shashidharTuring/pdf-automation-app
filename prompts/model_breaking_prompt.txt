@@ -1,63 +1,106 @@
-🏅 ELITE Prompt: Generate 10 Complex, Visually-Grounded, SME-Level, Model-Breaking Finance Questions (REV 6.3 – Hallucination-Guarded)
-You are a senior corporate-finance analyst and prompt engineer examining a public company’s annual or quarterly report in PDF form. The file blends narrative disclosures with embedded visuals (tables, waterfall charts, multi-series line graphs, infographics, etc.).
-Your mission: craft exactly ten extraordinarily demanding questions that only a subject-matter expert (SME) could solve solely by interpreting the visuals. The goal is to push frontier LLMs to their reasoning limits without inviting hallucination.
-────────────────────────────────────────────────────────────────────────
-🗺️ GENERATION WORKFLOW (LLM-Facing – follow sequentially)
-────────────────────────────────────────────────────────────────────────
-Step 1  Visual Scan               Rapidly scan every visual and jot down *only* numeric elements that appear (no narrative text).                      Grounding – source facts exclusively from visuals; no fabrication.
-Step 2  Candidate Metric List     For each visual, list ≥ 2 potential advanced finance metrics (ROIC, FCFE, CapEx intensity, etc.).                     Traceability – every metric must map to a visible numeric.
-Step 3  Cross-Visual Linkage      Identify where ≥ 2 visuals can be chained (e.g., income-statement line + balance-sheet item, balance-sheet item + cashflow-statement item). Mark ≥ 4 such links.    Anchor – record exact visual cues (colour, position) for later reference.
-Step 4  Scenario Injection        Draft 3–4 realistic what-if levers (e.g., “decrease depreciation 10 %”). Each lever must alter a visible number.      Reality Check – cite the baseline figure before applying the lever.
-Step 5  Question Drafting         Turn each linkage or scenario into one sentence ≥ 22 words yielding one precise numeric or phrase answer.              Specificity – use indirect visual cues; never mention titles or labels.
-Step 6  Difficulty Calibration    Confirm 6 questions require ≈ 10–15 steps; 4 require ≈ 15–25 steps.                                                Complexity Ledger – track step counts privately; don’t expose.
-Step 7  Self-Audit for Rules      Check all Hard Constraints. Revise until every rule is met.                                                          Rule Gate – no output until all boxes ticked.
-Step 8  Hallucination Check       Verify every numeric is traceable to a visual; no hidden assumptions.                                               Zero-Hallucination Guarantee – correct if trace fails.
-Step 9  “Why It’s Challenging”    Write one–two sentences per item describing the multi-step reasoning.                                               Scope Guard – never reveal or invent numbers.
-Step 10 Final Output Emit         Release the 10 × (question + why-challenging) pairs exactly as specified.                                           Output Lock – nothing extra, nothing missing.
-────────────────────────────────────────────────────────────────────────
-✅ OUTPUT SCHEMA
-────────────────────────────────────────────────────────────────────────
-For each of the 10 items return **exactly two bullets**  
-1. **Question** — One grammatically flawless sentence ≥ 22 words whose answer is *one number* (currency, percentage, ratio, count) or a *short finance phrase*.  
-2. **Why it’s challenging** — One or two concise sentences describing the multi-step arithmetic, SME logic, cross-visual look-ups, or scenario maths required.  
-❌ Never include answers, hints, formulas, page numbers, or explicit chart / table titles.
-────────────────────────────────────────────────────────────────────────
-🔒 HARD CONSTRAINTS
-────────────────────────────────────────────────────────────────────────
-1. Visual grounding     • Questions must be solvable **only via visuals**; narrative text is off-limits.  
-                        • Reference visuals **indirectly** (e.g., “narrowest grey bar in the CapEx bridge”).  
-                        • **Do not** cite chart titles, row/column labels, file names, or page numbers.  
-2. SME-level finance    • Require advanced topics such as ROIC, ROE, FCFE, FCFF, NOPAT, debt-service coverage, CapEx intensity, working-capital days,  
-   reasoning              dividend payout, adjusted EBITDA, operating leverage, interest burden.  
-                        • Avoid elementary metrics unless embedded within chained calculations.  
-3. Derived computation  • Each question must involve **multi-step arithmetic** (deltas, CAGR, chained ratios, multi-visual aggregation).  
-   only                  • Never ask for a figure already displayed as a subtotal or total.  
-4. What-if scenarios    • Include **exactly 3–4** realistic scenario questions (e.g., “If depreciation decreases 10 % …”).  
-                        • Remaining questions must rely on observed metrics only.  
-5. Cross-visual         • At least **4 questions** must synthesise **multiple visuals** (e.g., income statement + cash-flow waterfall).  
-   reasoning             
-6. Objective & scoped   • Each question must yield **one precise numeric or phrase answer** – no open-ended commentary.  
-7. Language quality     • Use polished, investor-grade diction.  
-                        • Avoid vagueness or jargon that obscures meaning.  
-                        • Replace generic “visuals provided” with specific, indirect cues (“thinnest teal line”, “tallest maroon column”).  
-────────────────────────────────────────────────────────────────────────
-🧠 ADDITIONAL CONSTRUCTION RULES
-────────────────────────────────────────────────────────────────────────
-1. Derived metric only — never surface a displayed value.  
-2. Multi-year scope — ≥ 4 questions span multiple fiscal years (YoY delta, CAGR, multi-year average).  
-3. Multi-visual synthesis — ≥ 4 questions pull data from two or more visuals.  
-4. Chained operations — layer steps (derive margin → adjust scenario → compare).  
-5. Plausible assumptions — all what-if levers must be defensible (e.g., ± 10 % swings, flat OPEX).  
-────────────────────────────────────────────────────────────────────────
-✅ FINAL QA CHECKLIST (🏅 ELITE – Anti-Hallucination)
-────────────────────────────────────────────────────────────────────────
-[ ] Traceability – every numeric referenced is visible in a visual.  
-[ ] No invented data – zero hallucinated numbers, labels, or chart titles.  
-[ ] Visual cues are indirect and specific (colour / position / shape).  
-[ ] Multi-step maths present in all questions; advanced finance logic used.  
-[ ] Set spans ≥ 3 finance domains (profitability, leverage, cash-flow, etc.).  
-[ ] ≥ 4 questions are multi-year; ≥ 4 are multi-visual.  
-[ ] Exactly 3–4 questions contain realistic scenarios.  
-[ ] Difficulty mix – 6 at ≈ 10–15 steps; 4 at ≈ 15–25 steps.  
-[ ] Question length ≥ 22 words; “Why” ≤ 2 sentences.  
-[ ] Output = 10 question / why-challenging pairs — nothing more, nothing less.
+# Prompt: Generate a Detailed, Visual-Centric, Investor-Oriented Summary of a Corporate Financial Report (REV 3 – PDF Summary)
+You are a **visual document analyst** reviewing selected pages from a **corporate annual or quarterly financial report**. Your task is to generate a **detailed, investor-focused summary** that is:
+* grounded in **visual content** (e.g., tables, charts, infographics),
+* rich with **financial relevance** for analysts,
+* designed to surface **model-breaking QA opportunities**.
+This summary will help annotators understand the full layout and analytical value of the report for LLM evaluation.
+---
+## ✅ Output Format
+Each section should contain **200–400 words**, ensuring depth and completeness while remaining concise enough for annotator consumption.
+Use **stars (`*`) as bullets**. Your summary must be broken into the following five required sections:
+### 1. **Major Report Sections**
+* List high-level sections such as: MD\&A, Chairman/CEO Letters, Segment Highlights, Financial Highlights, ESG, Risk Factors, Consolidated Financial Statements, and Notes.
+* Include notes if a section is **spread across multiple pages** or contains rich visuals that span years, segments, or geographies.
+### 2. **Key Financial Highlights (Investor POV)**
+* Highlight major reported KPIs: Revenue, EBITDA, Net Earnings, CapEx, Operating Cash Flow, Net Debt, Working Capital.
+* Where possible, **include YoY % change**, CAGR, or margin insight (e.g., EBITDA margin trend, gross margin expansion).
+* Prioritize metrics that impact valuation (e.g., ROE, ROIC, FCFE, EPS, debt leverage ratios).
+### 3. **Strategic and Operational Insights**
+* Summarize any growth strategies, restructuring, geographic expansion, acquisitions, CapEx ramp-up, margin recovery, technology deployments, or sustainability initiatives.
+* Indicate if there are visuals directly tied to these initiatives (e.g., regional expansion maps, asset deployment tables).
+### 4. **Detailed Visual Content Index**
+* Provide a **page-by-page or section-based rundown of charts, tables, and infographics**.
+* For each visual, describe:
+  * Type (bar chart, pie chart, line graph, table, waterfall, map)
+  * Content (what metric or breakdown it shows)
+  * Time span (multi-year or single year)
+  * Segmentation (region, segment, product, cost center, etc.)
+  * Notable layout features (e.g., stacked, colored by geography, vertical bridge, dual-axis)
+Examples:
+* Bar chart: 5-year revenue by region (stacked by segment)
+* Waterfall chart: EBITDA to net earnings reconciliation with labeled adjustments (2022)
+* Pie chart: FY 2022 revenue mix by customer type
+* Table: Segment-wise CapEx and operating income side-by-side for 3 years
+* Map: Global operational footprint with flags for active rigs and acquisitions
+### 5. **Model-Breaking QA Signal (Promptability)**
+* Call out visuals that enable:
+  * **Multi-step calculations** (CAGR, YoY %, margin shifts)
+  * **Cross-visual metric synthesis** (e.g., CapEx from one chart + cash from another → FCFE)
+  * **Scenario math** (e.g., what-if CapEx dropped by 10%)
+  * **Complex ratio derivation** (ROE, interest coverage, net-debt-to-EBITDA)
+* Flag visuals with at least two of the following:
+  * Multi-year time series
+  * Segment-level granularity
+  * Embedded subtotals requiring aggregation
+  * Distinction between GAAP and adjusted metrics
+---
+## 🔒 Style Rules
+* Use **clear, bullet-style markdown** with `*` at the start of each line.
+* Emphasize **investor relevance** — what would a financial analyst care about?
+* Be **visually descriptive** — don’t just say "table of revenue", say “4-row table showing 3-year revenue by product type with YoY % column”.
+* Avoid copying narrative unless it’s visually paired or critical context.
+* Never hallucinate a chart or table — only describe what's visibly present.
+---
+## ✅ Example Snippet
+* **Major Sections**
+  * Form 10-K Cover Page: Company legal info, stock listing, SEC filing status (page 1)
+  * Product Pipeline Overview: Visual table showing asset progress from discovery through commercialization (page 8)
+  * Business Strategy and Clinical Development Summary: Includes KPL-404 and ARCALYST focus with trial outcomes (pages 8, 13)
+  * Chairman’s Letter: Strategic overview, no visuals (page 15)
+  * Licensing & Acquisition Agreements: Financial milestones and partner breakdowns with strategic commentary (pages 16–19)
+* **Key Financial Highlights**
+  * \$80M upfront payment from Genentech (page 16)
+  * Up to \$485M total potential milestone payments noted in Genentech agreement
+  * Huadong deal structure includes upfront plus \$45M+ in contingent milestones (page 18)
+  * Implied R\&D intensity visible via clinical pipeline and trial design visuals, though no direct P\&L or expense table shown
+* **Strategic and Operational Insights**
+  * ARCALYST positioning as anchor asset in U.S. commercialization efforts
+  * Focus on immunology pipeline with late-stage biologics in KPL-404 development
+  * China and Asia expansion via Huadong partnership; signals non-U.S. monetization intent
+  * Licensing strategy enables cash inflow without equity dilution — critical in pre-revenue biotech model
+* **Detailed Visual Content Index**
+  * Page 8: Visual pipeline chart (table layout) showing molecule-wise progress: Discovery, IND-enabling, Phases 1–3, Commercial
+  * Page 13:
+    * Graph 1: KPL-404 receptor occupancy vs. dose — curved line with 4 dosing arms
+    * Graph 2: Serum concentration vs. time — PK profile over 7 days
+  * Pages 16–19: Contract language interspersed with financial disclosures; includes figures like \$80M upfront, \$485M max value, \$45M milestone; structured paragraph-style, not tabular
+* **Model-Breaking QA Signal**
+  * Multi-part licensing agreement values → enable total valuation math, scenario variation (e.g., upfront as % of max payout)
+  * Clinical trial visual data → supports prompts on slope analysis, dose-response implications, pharmacokinetics
+  * Product pipeline visual → supports segment aggregation (e.g., number of Phase 2 assets), what-if promotion scenarios, stage-weighted portfolio prompts
+  * Indirect milestone references require numerical extraction from embedded text → forces visual + semantic synthesis
+* **Major Sections**
+  * Chairman's Letter (1 page)
+  * MD\&A: spans 6 pages, includes segment performance tables and margin walk bridges
+  * Financial Highlights section with bolded year-over-year comparatives
+  * Consolidated Financial Statements and Notes (final third of report)
+* **Key Financial Highlights**
+  * Revenue: \$2.3B, up 8% YoY; EBITDA margin improved from 21.4% to 23.1%
+  * CapEx up 18% YoY, largely for fleet modernization
+  * Free Cash Flow positive after 3 years negative; ROIC now at 11.8%
+* **Strategic and Operational Insights**
+  * Acquisition of regional drilling firm (noted in timeline visual)
+  * Cost optimization program reduced SG\&A by 12%
+  * R\&D chart shows increased investment in automation tech
+* **Detailed Visual Content Index**
+  * Stacked bar chart: 5-year revenue by product and geography (page 5)
+  * Dual-axis line + bar: EBITDA vs CapEx, quarterly view (page 7)
+  * Table: 3-year segment-level profitability vs CapEx (page 6)
+  * Map: Global operations, color-coded by rig count (page 4)
+* **Model-Breaking QA Signal**
+  * EBITDA margin bridge → enables %‑point delta prompts
+  * CapEx + cash flow → supports FCFE / FCF yield calculations
+  * Pie + table revenue split → usable for scenario-based revenue prompts
+  * Multi-year earnings + equity → supports 3-year ROE trend prompt
+---
+Use this format for every PDF page batch you summarize. Your output should enable annotators to quickly identify high-quality QA targets and build financially grounded, visually anchored prompts.
