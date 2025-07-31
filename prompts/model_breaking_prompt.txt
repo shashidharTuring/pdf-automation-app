@@ -1,71 +1,63 @@
-# Prompt: Generate 10 Complex, Visually-Grounded, SME-Level Model-Breaking Finance Questions (REV 6 – Refined Visual Language)
-
-You are a **finance analyst and prompt engineer** reviewing a **corporate annual or quarterly report** in PDF format. The report includes both narrative content and **embedded visuals** (e.g., tables, charts, diagrams, infographics).
-
-Your task is to create **exactly ten** extremely challenging questions that require **subject-matter expertise (SME)** in corporate finance and can only be answered by interpreting the **visuals**. These questions are meant to push large language models (LLMs) to their reasoning limits.
-
----
-
-## ✅ Output Format
-
-For each of the 10 items, return **only two bullets**:
-
-1. **Question** – A single, grammatically correct sentence **≥ 22 words**, whose answer is a **single number** (currency, percentage, ratio, count) or **short finance phrase**.
-2. **Why it’s challenging** – One or two short sentences explaining the multi-step reasoning, SME knowledge, cross-visual lookups, or scenario logic required.
-
-❌ Do **not** provide answers, hints, formulas, page references, or chart/table titles.
-
----
-
-## 🔒 Required Constraints
-
-| Theme                               | Requirements                                                                                                                                                                                                                                                                                                                                                                         |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **1. Visual grounding**             | • Questions must be solvable **only by inspecting visuals** (tables, charts, infographics)—not narrative text.<br>• Reference visuals **indirectly** (e.g., “the narrowest grey bar in the CapEx bridge” or “the left-most blue slice in the revenue mix pie”).<br>• Do **not** cite chart titles, row/column labels, file names, or page numbers.                                   |
-| **2. SME-level finance reasoning**  | • Questions must require knowledge of advanced corporate finance concepts such as:<br> ‣ ROIC, ROE, FCFE, FCFF, NOPAT<br> ‣ Debt-service coverage ratio, CapEx intensity, working capital days<br> ‣ Dividend payout, adjusted EBITDA, operating leverage, interest burden<br>• Avoid overly basic metrics (e.g., gross margin, revenue growth) unless used in chained calculations. |
-| **3. Derived computation only**     | • Each question must involve **multi-step arithmetic** (e.g., deltas, CAGR, scenario math, chaining ratios, multi-visual aggregation).<br>• Do **not** ask for values that appear as final subtotals or totals in the visual.                                                                                                                                                        |
-| **4. What-if scenario integration** | • Include **exactly 3–4 questions** that introduce a **realistic what-if scenario**, such as:<br> ‣ “If depreciation decreased by 10%…”<br> ‣ “If CapEx were deferred…”<br> ‣ “Assuming net debt increased by 15%…”<br>All other questions should be based on observed finance metrics without hypothetical adjustments.                                                             |
-| **5. Cross-visual reasoning**       | • At least **4 questions** must require **multiple visuals** (e.g., income statement + balance sheet, operating chart + capital flow diagram).                                                                                                                                                                                                                                       |
-| **6. Objective and well-scoped**    | • Each prompt must lead to **one precise, numeric or phrase-based answer**.<br>• Avoid open-ended, explanatory, or opinion-based language.                                                                                                                                                                                                                                           |
-| **7. Language quality**             | • Use polished, professional, equity-analyst language.<br>• Avoid vague, casual, or overly technical phrasing that obscures meaning.<br>• Eliminate generic phrasing like “from the visuals provided” — instead, reference visuals **indirectly** and **specifically** (e.g., “from the smallest wedge in the regional revenue pie chart”).                                          |
-
----
-
-## 🧠 Additional Construction Rules
-
-### 🔎 Reference Examples (Use as Difficulty Guide, Do Not Copy Verbatim)
-
-To calibrate complexity and visual grounding, you may refer to the following examples:
-
-* **Example 1:** *What is the weighted average cost of capital (WACC) using the cost of debt and equity percentages from the cost structure pie chart?*
-* **Example 2:** *Calculate the free cash flow margin using the cash flow and revenue figures from the cash flow statement and revenue table.*
-* **Example 3:** *Compute the net‑debt‑to‑EBITDA multiple for 2022 by subtracting the cash‑and‑investment figure near the top of the resource table from the total liabilities figure further down, adding depreciation and amortization to the bottom‑line profit from the performance and cash‑generation tables, and then dividing the net debt by the resulting EBITDA.*
-
-These examples illustrate:
-
-* Indirect visual referencing (e.g., “cost structure pie chart”, “performance and cash-generation tables”)
-* Multi-step, chained reasoning across visuals
-* SME-level finance metrics with investor relevance
-
-Include **exactly 3 to 4** what-if scenario questions. All others must use **real-world, but non-hypothetical** corporate finance calculations drawn from visuals only.
-
-1. Every question must calculate a **derived metric** — never extract a displayed figure.
-2. At least **four** questions must span **multiple fiscal years** and include a comparison (e.g., YoY delta, CAGR, multi-year average).
-3. Use **multiple visuals** for context-rich calculations, wherever possible.
-4. Encourage **chained operations**, e.g., derive a margin, adjust for a scenario, then compare it against a benchmark.
-5. All what-if assumptions should be **realistic** (e.g., "decrease depreciation by 10%", "increase revenue by 8%", "hold OPEX constant").
-
----
-
-## ✅ Final Checklist Before Submission (for human annotators)
-
-* [ ] Does each question reference visuals **indirectly** using visual features (bar height, color, position), not titles?
-* [ ] Does each question require **multi-step arithmetic** and/or finance-specific formulas?
-* [ ] Does the set cover **≥ 3 finance domains** across 10 questions?
-* [ ] Are **≥ 4 questions multi-year**, and **≥ 4 questions multi-visual**?
-* [ ] Are **exactly 3–4 questions scenario-based** with realistic what-if logic?
-* [ ] Are **six** questions \~10–15 steps (**hard**) and **four** \~15–25 steps (**Hard**)?
-* [ ] Are all "Questions" ≥ 22 words and all "Why it’s challenging" ≤ 2 sentences?
-* [ ] Have all references to “visuals” been rewritten to be **indirect and specific** (e.g., color-coded bar, top row of table, wedge size)?
-
-If **all boxes are checked**, output the 10 question / why-it’s-challenging pairs exactly as specified — no more, no less.
+🏅 ELITE Prompt: Generate 10 Complex, Visually-Grounded, SME-Level, Model-Breaking Finance Questions (REV 6.3 – Hallucination-Guarded)
+You are a senior corporate-finance analyst and prompt engineer examining a public company’s annual or quarterly report in PDF form. The file blends narrative disclosures with embedded visuals (tables, waterfall charts, multi-series line graphs, infographics, etc.).
+Your mission: craft exactly ten extraordinarily demanding questions that only a subject-matter expert (SME) could solve solely by interpreting the visuals. The goal is to push frontier LLMs to their reasoning limits without inviting hallucination.
+────────────────────────────────────────────────────────────────────────
+🗺️ GENERATION WORKFLOW (LLM-Facing – follow sequentially)
+────────────────────────────────────────────────────────────────────────
+Step 1  Visual Scan               Rapidly scan every visual and jot down *only* numeric elements that appear (no narrative text).                      Grounding – source facts exclusively from visuals; no fabrication.
+Step 2  Candidate Metric List     For each visual, list ≥ 2 potential advanced finance metrics (ROIC, FCFE, CapEx intensity, etc.).                     Traceability – every metric must map to a visible numeric.
+Step 3  Cross-Visual Linkage      Identify where ≥ 2 visuals can be chained (e.g., income-statement line + balance-sheet item, balance-sheet item + cashflow-statement item). Mark ≥ 4 such links.    Anchor – record exact visual cues (colour, position) for later reference.
+Step 4  Scenario Injection        Draft 3–4 realistic what-if levers (e.g., “decrease depreciation 10 %”). Each lever must alter a visible number.      Reality Check – cite the baseline figure before applying the lever.
+Step 5  Question Drafting         Turn each linkage or scenario into one sentence ≥ 22 words yielding one precise numeric or phrase answer.              Specificity – use indirect visual cues; never mention titles or labels.
+Step 6  Difficulty Calibration    Confirm 6 questions require ≈ 10–15 steps; 4 require ≈ 15–25 steps.                                                Complexity Ledger – track step counts privately; don’t expose.
+Step 7  Self-Audit for Rules      Check all Hard Constraints. Revise until every rule is met.                                                          Rule Gate – no output until all boxes ticked.
+Step 8  Hallucination Check       Verify every numeric is traceable to a visual; no hidden assumptions.                                               Zero-Hallucination Guarantee – correct if trace fails.
+Step 9  “Why It’s Challenging”    Write one–two sentences per item describing the multi-step reasoning.                                               Scope Guard – never reveal or invent numbers.
+Step 10 Final Output Emit         Release the 10 × (question + why-challenging) pairs exactly as specified.                                           Output Lock – nothing extra, nothing missing.
+────────────────────────────────────────────────────────────────────────
+✅ OUTPUT SCHEMA
+────────────────────────────────────────────────────────────────────────
+For each of the 10 items return **exactly two bullets**  
+1. **Question** — One grammatically flawless sentence ≥ 22 words whose answer is *one number* (currency, percentage, ratio, count) or a *short finance phrase*.  
+2. **Why it’s challenging** — One or two concise sentences describing the multi-step arithmetic, SME logic, cross-visual look-ups, or scenario maths required.  
+❌ Never include answers, hints, formulas, page numbers, or explicit chart / table titles.
+────────────────────────────────────────────────────────────────────────
+🔒 HARD CONSTRAINTS
+────────────────────────────────────────────────────────────────────────
+1. Visual grounding     • Questions must be solvable **only via visuals**; narrative text is off-limits.  
+                        • Reference visuals **indirectly** (e.g., “narrowest grey bar in the CapEx bridge”).  
+                        • **Do not** cite chart titles, row/column labels, file names, or page numbers.  
+2. SME-level finance    • Require advanced topics such as ROIC, ROE, FCFE, FCFF, NOPAT, debt-service coverage, CapEx intensity, working-capital days,  
+   reasoning              dividend payout, adjusted EBITDA, operating leverage, interest burden.  
+                        • Avoid elementary metrics unless embedded within chained calculations.  
+3. Derived computation  • Each question must involve **multi-step arithmetic** (deltas, CAGR, chained ratios, multi-visual aggregation).  
+   only                  • Never ask for a figure already displayed as a subtotal or total.  
+4. What-if scenarios    • Include **exactly 3–4** realistic scenario questions (e.g., “If depreciation decreases 10 % …”).  
+                        • Remaining questions must rely on observed metrics only.  
+5. Cross-visual         • At least **4 questions** must synthesise **multiple visuals** (e.g., income statement + cash-flow waterfall).  
+   reasoning             
+6. Objective & scoped   • Each question must yield **one precise numeric or phrase answer** – no open-ended commentary.  
+7. Language quality     • Use polished, investor-grade diction.  
+                        • Avoid vagueness or jargon that obscures meaning.  
+                        • Replace generic “visuals provided” with specific, indirect cues (“thinnest teal line”, “tallest maroon column”).  
+────────────────────────────────────────────────────────────────────────
+🧠 ADDITIONAL CONSTRUCTION RULES
+────────────────────────────────────────────────────────────────────────
+1. Derived metric only — never surface a displayed value.  
+2. Multi-year scope — ≥ 4 questions span multiple fiscal years (YoY delta, CAGR, multi-year average).  
+3. Multi-visual synthesis — ≥ 4 questions pull data from two or more visuals.  
+4. Chained operations — layer steps (derive margin → adjust scenario → compare).  
+5. Plausible assumptions — all what-if levers must be defensible (e.g., ± 10 % swings, flat OPEX).  
+────────────────────────────────────────────────────────────────────────
+✅ FINAL QA CHECKLIST (🏅 ELITE – Anti-Hallucination)
+────────────────────────────────────────────────────────────────────────
+[ ] Traceability – every numeric referenced is visible in a visual.  
+[ ] No invented data – zero hallucinated numbers, labels, or chart titles.  
+[ ] Visual cues are indirect and specific (colour / position / shape).  
+[ ] Multi-step maths present in all questions; advanced finance logic used.  
+[ ] Set spans ≥ 3 finance domains (profitability, leverage, cash-flow, etc.).  
+[ ] ≥ 4 questions are multi-year; ≥ 4 are multi-visual.  
+[ ] Exactly 3–4 questions contain realistic scenarios.  
+[ ] Difficulty mix – 6 at ≈ 10–15 steps; 4 at ≈ 15–25 steps.  
+[ ] Question length ≥ 22 words; “Why” ≤ 2 sentences.  
+[ ] Output = 10 question / why-challenging pairs — nothing more, nothing less.
