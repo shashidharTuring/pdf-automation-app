@@ -453,17 +453,32 @@ def analyze_pdf(pdf_path, progress_callback=None, max_workers=8):
         print("🤖 Sending prompt to GPT-4o...")
         prompt_response = call_gpt4o(model_breaking_prompt, [img for _, img in base64_images])
 
-        # Save in dataframe — same response for all rows (or just first)
-        # df["prompts_suggestions"] = ""
-        # df.loc[0, "prompts_suggestions"] = prompt_response
-        df["prompts_suggestions"] = prompt_response
+        # Check if the response indicates a safety filter trigger
+        if "[Safety Filter" in prompt_response or "I'm sorry, I can't assist" in prompt_response:
+            print("⚠️ Safety filter triggered. Trying with simplified prompt...")
+            # Try a simplified version
+            simplified_prompt = """Generate 5 comprehensive financial analysis questions based on the provided financial report images. Each question should:
+1. Use data from at least two different visual elements (tables, charts, graphs)
+2. Require financial ratio calculations or multi-step analysis
+3. Include realistic business scenarios
+4. Be solvable with objective answers
 
+Focus on practical financial analysis that would be useful for investment or business decision-making."""
+            
+            prompt_response = call_gpt4o(simplified_prompt, [img for _, img in base64_images])
+            
+            if "[Safety Filter" in prompt_response or "I'm sorry, I can't assist" in prompt_response:
+                print("❌ Simplified prompt also blocked. Skipping model-breaking prompts.")
+                prompt_response = "⚠️ Unable to generate model-breaking prompts due to content filter restrictions."
+
+        # Save in dataframe — same response for all rows (or just first)
+        df["prompts_suggestions"] = prompt_response
 
         print("✅ Model-breaking prompt response added to dataframe.")
 
     except Exception as e:
         print(f"❌ Failed to generate model-breaking prompts: {e}")
-        df["prompts_suggestions"] = ""
+        df["prompts_suggestions"] = "⚠️ Error generating model-breaking prompts."
 
 
 
