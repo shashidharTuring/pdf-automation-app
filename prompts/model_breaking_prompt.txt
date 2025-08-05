@@ -1,70 +1,68 @@
-**Refined Instruction Prompt for Generating Complex Financial Analysis Questions**
-
-You are generating financial analysis tasks designed for evaluating large language models (LLMs). Each task must simulate real-world analytical questions grounded in authentic financial reporting logic. Your prompts will require financial SME-level understanding and should reflect scenarios relevant to investment analysis, corporate finance, or operational decision-making.
-
+Financial Analysis Question Generator (Production Ready – Final)
+You are generating advanced financial analysis questions to test model-breaking reasoning on corporate financial reports.  
+Each question must simulate real-world financial decision-making scenarios, combining multi-table and visual reasoning with derived financial metrics.
 ---
-
-## 🔗 Core Requirements
-
-**Mandatory Criteria for Every Prompt**:
-
-1. **Use at least two visual elements** (tables, charts, graphs, or footnotes) from financial reports.
-
-   * Acceptable sources: Income Statement, Balance Sheet, Cash Flow Statement, Footnotes, MD\&A, Notes, Stock Price Table, or KPIs table.
-   * Do not use decorative visuals or headers.
-
-2. **Involve advanced reasoning and finance SME logic.**
-
-   * Must use financial ratios or chain computations (e.g., ROE, EBITDA Margin, WC Turnover, CapEx Intensity).
-   * Must require 25+ logical steps for medium questions, and 40+ for hard questions.
-   * Must require combining concepts from multiple sections of the report.
-
-3. **Cross-reference across multiple tables and/or textual narratives.**
-
-   * You MUST include at least one computation that uses data from **two or more distinct tables or sections** (e.g., use of inventory data from notes and revenue from IS to compute turnover).
-
-4. **Include at least two "what-if" or hypothetical assumptions** in the overall prompt set.
-
-   * These must affect ratios or derived metrics, not just single raw line items.
-   * Each assumption should be financially realistic and tied to stakeholder decisions (e.g., "if interest expense increased by 20% due to refinancing").
-
-5. **NO unnecessary or generic instructions.**
-
-   * Avoid phrasing like "assume all else remains the same" unless it prevents ambiguity.
-   * Do NOT refer to page numbers or chart names directly. Use indirect references like "bottom-most bar", "blue line", "dotted segment", etc.
-
-6. **Must be solvable with a single correct and objective answer.**
-
+:link: Core Rules
+:x: Do NOT provide answers, hints, formulas, page references, or chart/table titles.  
+Every question must satisfy ALL the following:  
+1. Visual Usage  
+   * Each question must use ≥ 2 visuals:  
+     - Tabular financial visual (Income Statement, Balance Sheet, Cash Flow, KPI table, Footnotes)  
+     - Optional diagram/flowchart visual for specific question categories  
+   * Indirect visual references only:  
+     - ✅ “lowest orange bar in the CapEx bridge”  
+     - ✅ “thin blue arrow in the free cash flow diagram”  
+     - ❌ “Table 3” or “Page 5”  
+2. Advanced Financial Logic  
+   * Must involve derived calculations:  
+     - ROE, ROIC, FCFE, FCFF, CapEx Intensity, Working Capital Turnover, EBITDA margin chain  
+   * Multi-step chain reasoning:  
+     - Medium = 25+ steps  
+     - Hard = 40+ steps  
+   * Combine ≥ 2 concepts from different report sections.
+3. Multi-Assumption & Scenario Logic  
+   * Exactly 3 questions must include multi-assumption what-if scenarios:  
+     - e.g., “if interest expense increases by 20% and dividend payout ratio decreases to 30%…”  
+   * Scenario must affect a derived metric, not a raw line item.
+4. Flowchart/Diagram Integration  
+   * Exactly 3 questions must involve flowcharts, waterfall charts, or process diagrams  
+     - Must require extracting numeric info from these visuals to calculate a ratio or derived metric.  
+   * Indirect visual language (e.g., “dotted segment in the operational flow”).
+5. Hard Numeric Chain Questions  
+   * Exactly 4 questions must be hard numeric questions:  
+     - 40+ step reasoning, multi-table chain, no flowchart or scenario required.
+6. Single, Objective Output  
+   * Each question yields a single number or short finance phrase (e.g., ROE %, net debt-to-EBITDA multiple).  
+   * ❌ No subjective “why” or “evaluate” phrasing.
+7. Language Quality  
+   * One grammatically correct sentence ≥ 22 words per question.  
+   * Must simulate an equity analyst’s inquiry and avoid vague language.
 ---
-
-## 📅 Task Set Requirements
-
-* Total Prompts: **5**
-
-  * **3 Hard** (40+ steps, multi-table, ratio-driven, visually complex)
-  * **2 Medium** (25+ steps, at least two visuals, chain logic)
-  * Include **2 prompts with multi-assumption what-if logic**
-
+:date: Question Distribution
+| Category                     | Count | Characteristics                                                      |
+|------------------------------|-------|----------------------------------------------------------------------|
+| Flowchart / Diagram-based    | 3     | Must reference a flowchart, process diagram, or waterfall chart       |
+| Multi-Assumption What-If     | 3     | Must include ≥2 financial assumptions affecting derived metrics       |
+| Hard Multi-Table Numeric     | 4     | ≥40-step reasoning, derived ratios, multi-table chain                 |
+| Total                        | 10    |                                                                      |
 ---
-
-## 🔄 Output Format Per Prompt:
-
-### ✅ Prompt {n} (**{Difficulty}**; **Visuals:** {brief visual source combo})
-
-**Prompt:**
-Write a clear, real-world financial question that requires the model to reason over multiple visuals, include SME logic, and reflect business decision contexts. The prompt should require 25–40+ reasoning steps and may involve computing, comparing, cross-referencing, and/or adjusting financial metrics.
-
-**Rationale:**
-
-* Describe **what financial concept** or ratio is tested
-* Explain **what tables/sections** are used (e.g., Income Statement + Footnote + Cash Flow table)
-* List **reasoning types involved** (e.g., ratio chain, multi-table comparison, what-if scenario)
-
+:arrows_counterclockwise: Output Format Per Question
+Question:  
+A single ≥ 22-word sentence that presents a realistic business scenario requiring a single numeric or short finance phrase output, computed using multi-step reasoning across ≥ 2 visuals.
+Rationale:  
+* Summarize the financial concept/ratio tested  
+* Mention visuals used (e.g., Income Statement + CapEx Waterfall)  
+* Outline reasoning chain (multi-step, cross-table, scenario if applicable)  
 ---
-
-## ✅ Additional Constraint:
-
-Each prompt must include **at least one sentence of 25+ words** in the problem statement, ensuring natural, purposeful framing without sacrificing analytical complexity.
-
----
-
+:white_check_mark: Final Validation Checklist
+| Checkpoint                   | Requirement                                                      |
+|------------------------------|------------------------------------------------------------------|
+| Sentence Length              | ≥ 22 words                                                      |
+| Single-Value Answer          | Numeric or short finance phrase                                 |
+| Visuals per Question         | ≥ 2 visuals, indirect reference                                 |
+| Multi-Step Reasoning         | Medium ≥ 25 steps, Hard ≥ 40 steps                              |
+| Scenario Coverage            | Exactly 3 multi-assumption questions                           |
+| Flowchart Coverage           | Exactly 3 diagram/flow questions                               |
+| Hard Numeric Chain           | Exactly 4 multi-table hard numeric questions                   |
+| No Subjective Language       | Objective, measurable output only                              |
+| Production-Ready             | Consistent format, no hallucination triggers                   |
