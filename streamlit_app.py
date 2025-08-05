@@ -2,7 +2,6 @@ import streamlit as st
 import os
 import pandas as pd
 import time
-import gdown
 import json
 from analyzer.pdf_processor import analyze_pdf
 from analyzer.drive_uploader import download_file_from_drive
@@ -99,13 +98,17 @@ if st.session_state.get("start_analysis", False) and not st.session_state.get("s
     else:
         drive_link = catalog_df[catalog_df["pdf_name"] == pdf_name]["pdf_link"].values[0]
         file_id = drive_link.split("/d/")[1].split("/")[0]
-        download_url = f"https://drive.google.com/uc?id={file_id}"
 
         if not os.path.exists(pdf_file):
             with st.spinner("⬇️ Downloading PDF from Google Drive..."):
                 log_status("📁 Downloading PDF from Google Drive...")
-                gdown.download(download_url, pdf_file, quiet=False)
-                log_status("✅ PDF downloaded successfully.")
+                try:
+                    download_file_from_drive(file_id, pdf_file)
+                    log_status("✅ PDF downloaded successfully.")
+                except Exception as e:
+                    st.error(f"❌ Failed to download PDF: {str(e)}")
+                    log_status(f"❌ PDF download failed: {str(e)}")
+                    st.stop()
 
         st.warning("⏳ Please wait ~90–120 seconds for full analysis.")
         log_status("🔄 Starting GPT-4o analysis. This may take 1–2 minutes...")
