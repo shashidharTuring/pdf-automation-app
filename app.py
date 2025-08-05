@@ -2,12 +2,13 @@ import streamlit as st
 import os
 import pandas as pd
 import time
-import gdown
 import json
 from analyzer.pdf_processor import analyze_pdf
 from analyzer.drive_uploader import download_file_from_drive
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
+from PyPDF2 import PdfReader
+
 
 # --- Page setup ---
 st.set_page_config(page_title="📄 PDF Visual Analyzer", layout="wide")
@@ -97,24 +98,33 @@ if st.session_state.get("start_analysis", False) and not st.session_state.get("s
     else:
         drive_link = catalog_df[catalog_df["pdf_name"] == pdf_name]["pdf_link"].values[0]
         file_id = drive_link.split("/d/")[1].split("/")[0]
-        download_url = f"https://drive.google.com/uc?id={file_id}"
 
         if not os.path.exists(pdf_file):
             with st.spinner("⬇️ Downloading PDF from Google Drive..."):
                 log_status("📁 Downloading PDF from Google Drive...")
-                gdown.download(download_url, pdf_file, quiet=False)
-                log_status("✅ PDF downloaded successfully.")
+                try:
+                    download_file_from_drive(file_id, pdf_file)
+                    log_status("✅ PDF downloaded successfully.")
+                except Exception as e:
+                    st.error(f"❌ Failed to download PDF: {str(e)}")
+                    log_status(f"❌ PDF download failed: {str(e)}")
+                    st.stop()
 
         st.warning("⏳ Please wait ~90–120 seconds for full analysis.")
         log_status("🔄 Starting GPT-4o analysis. This may take 1–2 minutes...")
         progress = st.progress(0, text="Starting PDF analysis...")
         start_time = time.time()
+        elapsed_display = st.empty()
+
 
         def progress_callback(current, total):
             if st.session_state.get("stop_analysis", False):
                 raise Exception("⛔ Analysis stopped by user.")
             pct = int((current / total) * 100)
             progress.progress(pct, text=f"Analyzing pages... ({pct}%)")
+            elapsed_time = int(time.time() - start_time)
+            elapsed_display.markdown(f"⏱️ Elapsed time: `{elapsed_time}` seconds")
+
 
         try:
             analyze_pdf(pdf_file, progress_callback=progress_callback)
@@ -144,7 +154,8 @@ if os.path.exists(csv_file_path):
     with tab2:
         st.subheader("🤯 5 Model-Breaking Prompts")
         if "prompts_suggestions" in df.columns and df["prompts_suggestions"].dropna().any():
-            prompt_text = df["prompts_suggestions"].dropna().iloc[0]
+            prompt_text = df.loc[df["prompts_suggestions"].str.strip() != "", "prompts_suggestions"].iloc[0]
+
             st.markdown(prompt_text)
 
             st.download_button(
@@ -161,6 +172,24 @@ if os.path.exists(csv_file_path):
             st.download_button("📄 Download Original PDF", f.read(), file_name=pdf_file_path, mime="application/pdf")
 
     st.subheader("📄 Page-wise Analysis")
+
+    # --- NEW: count pages ---
+    try:
+        page_count = len(PdfReader(pdf_file_path).pages)
+    except Exception:
+        # fallback: use DataFrame if PyPDF2 can’t open the file (e.g., still downloading)
+        page_count = df["page_no"].nunique()
+
+    st.markdown(f"**Total pages in PDF:** {page_count}")
+
+# # --- existing selector, now fed by a sorted list up to page_count ---
+# page_numbers = list(range(1, page_count + 1))
+# selected_page = st.selectbox("Select a page number:", page_numbers)
+
+# selected_row = df[df["page_no"] == selected_page].iloc[0]
+# st.markdown(f"**Page {selected_page} Analysis:**")
+# st.markdown(selected_row["gpt4o_description"])
+
     page_numbers = df["page_no"].tolist()
     selected_page = st.selectbox("Select a page number:", page_numbers)
     selected_row = df[df["page_no"] == selected_page].iloc[0]
