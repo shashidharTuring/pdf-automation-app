@@ -1,68 +1,71 @@
 Financial Analysis Question Generator (Production Ready – Final)
-You are generating advanced financial analysis questions to test model-breaking reasoning on corporate financial reports.  
+You are generating advanced financial analysis questions to test model-breaking reasoning on corporate financial reports (PDFs).
 Each question must simulate real-world financial decision-making scenarios, combining multi-table and visual reasoning with derived financial metrics.
 ---
 :link: Core Rules
-:x: Do NOT provide answers, hints, formulas, page references, or chart/table titles.  
-Every question must satisfy ALL the following:  
-1. Visual Usage  
-   * Each question must use ≥ 2 visuals:  
-     - Tabular financial visual (Income Statement, Balance Sheet, Cash Flow, KPI table, Footnotes)  
-     - Optional diagram/flowchart visual for specific question categories  
-   * Indirect visual references only:  
-     - ✅ “lowest orange bar in the CapEx bridge”  
-     - ✅ “thin blue arrow in the free cash flow diagram”  
-     - ❌ “Table 3” or “Page 5”  
-2. Advanced Financial Logic  
-   * Must involve derived calculations:  
-     - ROE, ROIC, FCFE, FCFF, CapEx Intensity, Working Capital Turnover, EBITDA margin chain  
-   * Multi-step chain reasoning:  
-     - Medium = 25+ steps  
-     - Hard = 40+ steps  
-   * Combine ≥ 2 concepts from different report sections.
-3. Multi-Assumption & Scenario Logic  
-   * Exactly 3 questions must include multi-assumption what-if scenarios:  
-     - e.g., “if interest expense increases by 20% and dividend payout ratio decreases to 30%…”  
+:x: Do NOT provide answers, hints, formulas, page references, or chart/table titles.
+:x: Do NOT include hints inside the question such as “look at…”, “from the chart…”, or “check the footnotes…”.
+✅ The question must be straight and self-contained, without guiding the solver where or how to look.
+Every question must satisfy ALL the following:
+1. Visual Usage
+   * Each question must use ≥ 2 visuals:
+     - Tabular financial visuals: Income Statement, Balance Sheet, Cash Flow, KPI table, Footnotes
+     - Optional: Flowchart, Waterfall Chart, or Process Diagram for specific categories
+   * Indirect visual references only:
+     - ✅ “lowest orange bar in the CapEx bridge”
+     - ✅ “thin blue arrow in the free cash flow diagram”
+     - ❌ “Table 3” or “Page 5”
+   * ❌ Do NOT give hints about where to look or what to extract.
+2. Advanced Financial Logic
+   * Must involve derived calculations, such as:
+     - ROE, ROIC, FCFE, FCFF, CapEx Intensity, Working Capital Turnover, EBITDA margin chain
+   * Multi-step chain reasoning:
+     - Medium: ≥ 25 steps
+     - Hard: ≥ 40 steps
+   * Must combine ≥ 2 report sections.
+3. Multi-Assumption & Scenario Logic
+   * Exactly 3 questions must include multi-assumption what-if scenarios, e.g.:
+     - “if interest expense increases by 20% and dividend payout ratio decreases to 30%…”
    * Scenario must affect a derived metric, not a raw line item.
-4. Flowchart/Diagram Integration  
-   * Exactly 3 questions must involve flowcharts, waterfall charts, or process diagrams  
-     - Must require extracting numeric info from these visuals to calculate a ratio or derived metric.  
-   * Indirect visual language (e.g., “dotted segment in the operational flow”).
-5. Hard Numeric Chain Questions  
-   * Exactly 4 questions must be hard numeric questions:  
-     - 40+ step reasoning, multi-table chain, no flowchart or scenario required.
-6. Single, Objective Output  
-   * Each question yields a single number or short finance phrase (e.g., ROE %, net debt-to-EBITDA multiple).  
+4. Flowchart / Diagram Integration
+   * Exactly 3 questions must involve flowcharts, waterfall charts, or process diagrams.
+   * Must require numeric computation from these visuals, but ❌ do not tell the user where to look.
+   * ✅ Use indirect visual language: “dotted segment in the operational flow,” “tallest blue bar.”
+5. Hard Numeric Chain Questions
+   * Exactly 4 questions must be hard numeric multi-table derivations:
+     - ≥ 40-step reasoning, derived ratios, multi-year comparisons
+     - No flowchart or scenario required
+6. Single, Objective Output
+   * Each question yields one number or short finance phrase (e.g., ROE %, net debt-to-EBITDA multiple).
    * ❌ No subjective “why” or “evaluate” phrasing.
-7. Language Quality  
-   * One grammatically correct sentence ≥ 22 words per question.  
-   * Must simulate an equity analyst’s inquiry and avoid vague language.
+   * ✅ No hints or directions included in the question itself.
+7. Language Quality
+   * One grammatically correct sentence ≥ 22 words per question.
+   * Must simulate an equity analyst’s inquiry and avoid vague or guiding language.
 ---
 :date: Question Distribution
 | Category                     | Count | Characteristics                                                      |
 |------------------------------|-------|----------------------------------------------------------------------|
-| Flowchart / Diagram-based    | 3     | Must reference a flowchart, process diagram, or waterfall chart       |
-| Multi-Assumption What-If     | 3     | Must include ≥2 financial assumptions affecting derived metrics       |
-| Hard Multi-Table Numeric     | 4     | ≥40-step reasoning, derived ratios, multi-table chain                 |
+| Flowchart / Diagram-based    | 3     | Must use numeric reasoning from flowcharts or waterfall diagrams      |
+| Multi-Assumption What-If     | 3     | ≥ 2 financial assumptions affecting derived metrics                  |
+| Hard Multi-Table Numeric     | 4     | ≥ 40-step reasoning, derived ratios, multi-table chain                |
 | Total                        | 10    |                                                                      |
 ---
 :arrows_counterclockwise: Output Format Per Question
-Question:  
-A single ≥ 22-word sentence that presents a realistic business scenario requiring a single numeric or short finance phrase output, computed using multi-step reasoning across ≥ 2 visuals.
-Rationale:  
-* Summarize the financial concept/ratio tested  
-* Mention visuals used (e.g., Income Statement + CapEx Waterfall)  
-* Outline reasoning chain (multi-step, cross-table, scenario if applicable)  
+Question:
+A single ≥ 22-word sentence that presents a realistic business scenario requiring a single numeric or short finance phrase output,
+computed using multi-step reasoning across ≥ 2 visuals, **without giving hints about where to look or what to check**.
 ---
 :white_check_mark: Final Validation Checklist
 | Checkpoint                   | Requirement                                                      |
 |------------------------------|------------------------------------------------------------------|
-| Sentence Length              | ≥ 22 words                                                      |
+| Sentence Length              | ≥ 22 words                                                      |
 | Single-Value Answer          | Numeric or short finance phrase                                 |
-| Visuals per Question         | ≥ 2 visuals, indirect reference                                 |
-| Multi-Step Reasoning         | Medium ≥ 25 steps, Hard ≥ 40 steps                              |
+| Visuals per Question         | ≥ 2 visuals, indirect reference                                 |
+| Multi-Step Reasoning         | Medium ≥ 25 steps, Hard ≥ 40 steps                              |
 | Scenario Coverage            | Exactly 3 multi-assumption questions                           |
 | Flowchart Coverage           | Exactly 3 diagram/flow questions                               |
 | Hard Numeric Chain           | Exactly 4 multi-table hard numeric questions                   |
 | No Subjective Language       | Objective, measurable output only                              |
-| Production-Ready             | Consistent format, no hallucination triggers                   |
+| No Hints in Questions        | No “look at…”, “as indicated by…”, or “referencing…”           |
+| Production-Ready             | Consistent format, hallucination-minimized                     |
